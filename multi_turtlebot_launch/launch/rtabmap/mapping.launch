@@ -33,6 +33,7 @@
   <arg name="rtabmapviz"        default="false"/>
   <arg name="localization"      default="false"/>
   <arg name="simulation"        default="false"/>
+  <arg name="sw_registered"     default="false"/>
   <arg     if="$(arg localization)" name="args"  default=""/>
   <arg unless="$(arg localization)" name="args"  default="--delete_db_on_start"/>
 
@@ -53,6 +54,8 @@
   <!-- Navigation stuff (move_base) -->
   <include unless="$(arg simulation)" file="$(find multi_turtlebot_launch)/launch/rtabmap/3dsensor.launch">
 	<arg name="robot_name" value="$(arg robot_name)"/>
+       <arg     if="$(arg sw_registered)" name="depth_registration" value="false"/>
+     <arg unless="$(arg sw_registered)" name="depth_registration" value="true"/>
   </include>
 
   <include file="$(find multi_turtlebot_launch)/launch/rtabmap/includes/move_base.launch.xml">
@@ -72,7 +75,7 @@
 	  <param name="Grid/FromDepth" type="string" value="true"/>
           <param name="odom_frame_id" type="string" value="/$(arg robot_name)/odom"/>
 	  <param name="map_frame_id" type="string" value="/$(arg robot_name)/map"/>
-	  <param name="grid_size" type="double" value="200"/>
+	  <!-- <param name="grid_size" type="double" value="200"/> -->
 
 	  <!-- inputs -->
 	  <remap from="scan"            to="/$(arg robot_name)/scan"/>
@@ -114,7 +117,7 @@
       <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
       <param name="Reg/Force3DoF"               type="string" value="true"/>
       <param name="Vis/InlierDistance"          type="string" value="0.05"/>
-      <param name="odom_frame_id" type="string" value="$(arg robot_name)/odom"/>
+      <param name="odom_frame_id" type="string" value="/$(arg robot_name)/odom"/>
       <remap from="rgb/image"       to="$(arg rgb_topic)"/>
       <remap from="depth/image"     to="$(arg depth_topic)"/>
       <remap from="rgb/camera_info" to="$(arg camera_info_topic)"/>
