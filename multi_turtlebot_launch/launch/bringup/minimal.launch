@@ -26,5 +26,7 @@
     <arg name="battery" value="$(arg battery)" />
     <arg name="robot_name" value="$(arg robot_name)"/>
   </include>
+  <node pkg="multi_robot" name="robot_moving" type="robot_moving" output="screen"/>
+  <node pkg="multi_robot" name="first_turn_cmd" type="first_turn_cmd" />
 </group>
 </launch>
